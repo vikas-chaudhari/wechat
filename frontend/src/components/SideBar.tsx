@@ -1,0 +1,56 @@
+import { useEffect } from "react";
+import ChatIcon from "../icons/ChatIcon";
+import axios from "axios";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { roomsAtom } from "../recoil/atoms/RoomsAtom";
+import { currentRoomAtom } from "../recoil/atoms/CurrrentRoomAtom";
+
+interface roomInterface {
+  _id: string;
+  name: string;
+  users: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+const SideBar = () => {
+  const [rooms, setrooms] = useRecoilState(roomsAtom);
+  const setCurrentRoom = useSetRecoilState(currentRoomAtom);
+  useEffect(() => {
+    const getRooms = async () => {
+      const user = await JSON.parse(localStorage.getItem("user")!);
+      const { data } = await axios.get("http://localhost:3000/all-rooms", {
+        headers: {
+          Authorization: user.token,
+        },
+      });
+      setrooms(data.rooms);
+    };
+    getRooms();
+  }, []);
+  const goToCurrentRoomHandler = (currRoom: roomInterface) => {
+    setCurrentRoom(currRoom);
+  };
+  return (
+    <div className="h-[calc(100vh-64px)] pt-2 px-3 w-64 flex flex-col bg-slate-950 border-r-[1px] border-r-slate-800">
+      <div className="w-full text-2xl flex justify-between items-center font-semibold text-slate-300">
+        <h1>All Rooms</h1>
+        <ChatIcon />
+      </div>
+
+      <div className="py-5 flex flex-col gap-2">
+        {rooms.map((room: roomInterface) => (
+          <div
+            className="cursor-pointer py-2 rounded-md bg-slate-900 px-2  hover:bg-slate-800 duration-150 select-none"
+            key={room._id}
+            onClick={() => goToCurrentRoomHandler(room)}
+          >
+            <h1 className="text-xl">{room.name}</h1>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default SideBar;

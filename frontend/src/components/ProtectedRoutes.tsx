@@ -10,7 +10,6 @@ interface ProtectedRoutesProps {
 
 const ProtectedRoutes: React.FC<ProtectedRoutesProps> = ({ children }) => {
   const [user, setUser] = useRecoilState(userAtom);
-  const [openChat, setOpenChat] = useRecoilState(openChatAtom);
 
   const navigate = useNavigate();
   useEffect(() => {

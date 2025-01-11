@@ -2,7 +2,6 @@ import { ReactNode, useEffect } from "react";
 import { userAtom } from "../recoil/atoms/UserAtom";
 import { useRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { openChatAtom } from "../recoil/atoms/OpenChatAtom";
 
 interface ProtectedRoutesProps {
   children: ReactNode;

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { roomsAtom } from "../recoil/atoms/RoomsAtom";
 import { currentRoomAtom } from "../recoil/atoms/CurrrentRoomAtom";
+import { openChatAtom } from "../recoil/atoms/OpenChatAtom";
 
 interface roomInterface {
   _id: string;
@@ -16,6 +17,8 @@ interface roomInterface {
 const SideBar = () => {
   const [rooms, setrooms] = useRecoilState(roomsAtom);
   const setCurrentRoom = useSetRecoilState(currentRoomAtom);
+  const [openChat, setOpenChat] = useRecoilState(openChatAtom);
+
   useEffect(() => {
     const getRooms = async () => {
       const user = await JSON.parse(localStorage.getItem("user")!);
@@ -28,17 +31,22 @@ const SideBar = () => {
     };
     getRooms();
   }, []);
+
   const goToCurrentRoomHandler = (currRoom: roomInterface) => {
     setCurrentRoom(currRoom);
+    setOpenChat(true);
   };
   return (
-    <div className="h-[calc(100vh-64px)] pt-2 px-3 w-64 flex flex-col bg-slate-950 border-r-[1px] border-r-slate-800">
-      <div className="w-full text-2xl flex justify-between items-center font-semibold text-slate-300">
+    <div
+      className={`${
+        openChat ? "hidden" : "flex"
+      } w-screen relative sm:w-64 h-[calc(100vh-64px)] pt-2 px-3 flex-col bg-slate-950 border-r-[1px] border-r-slate-800`}
+    >
+      <div className="mt-10 w-full text-2xl flex justify-between items-center font-semibold text-slate-300">
         <h1>All Rooms</h1>
         <ChatIcon />
       </div>
-
-      <div className="py-5 flex flex-col gap-2">
+      <div className="overflow-y-auto py-5 flex flex-col gap-2 ">
         {rooms.map((room: roomInterface) => (
           <div
             className="cursor-pointer py-2 rounded-md bg-slate-900 px-2  hover:bg-slate-800 duration-150 select-none"

@@ -13,10 +13,13 @@ import CreateRoomModal from "./components/CreateRoomModal";
 import JoinRoomModal from "./components/JoinRoomModal";
 import Loader from "./components/Loader";
 import { loaderAtom } from "./recoil/atoms/LoaderAtom";
+import ResponsiveMenuModal from "./components/ResponsiveMenuModal";
+import { responsiveMenuModalAtom } from "./recoil/atoms/responsiveMenuModalAtom";
 
 function App() {
   const createRoomModal = useRecoilValue(createRoomAtom);
   const joinRoomModal = useRecoilValue(joinRoomAtom);
+  const responsivemenuModal = useRecoilValue(responsiveMenuModalAtom);
   const loader = useRecoilValue(loaderAtom);
 
   return (
@@ -25,6 +28,7 @@ function App() {
       <Navbar />
       {createRoomModal && <CreateRoomModal />}
       {joinRoomModal && <JoinRoomModal />}
+      {responsivemenuModal && <ResponsiveMenuModal />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import SendIcon from "../icons/SendIcon";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { currentRoomAtom } from "../recoil/atoms/CurrrentRoomAtom";
 import { userAtom } from "../recoil/atoms/UserAtom";
 import axios from "axios";
+import LeftSliderIcon from "../icons/LeftSliderIcon";
+import { openChatAtom } from "../recoil/atoms/OpenChatAtom";
 
 interface roomInterface {
   _id?: string;
@@ -35,6 +37,7 @@ const ChatContent = () => {
   const [messages, setMessages] = useState<messageInterface[]>([]);
   const currentRoom = useRecoilValue<roomInterface>(currentRoomAtom);
   const user = useRecoilValue<userInterface>(userAtom);
+  const [openChat, setOpenChat] = useRecoilState(openChatAtom);
 
   const getPreviousmessages = async () => {
     const user = await JSON.parse(localStorage.getItem("user")!);
@@ -105,15 +108,24 @@ const ChatContent = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] bg-slate-950 relative w-full">
+    <div
+      className={`${openChat ? "flex flex-col" : "hidden"}
+      h-[calc(100vh-64px)] bg-slate-950 relative w-full`}
+    >
       {Object.keys(currentRoom).length > 0 ? (
         <>
-          <div className="flex items-center justify-between py-3 px-5 text-2xl font-semibold text-slate-300 bg-slate-950 border-b-[1px] border-b-slate-800">
+          <div className="flex flex-wrap items-center justify-between py-3 px-5 text-2xl font-semibold text-slate-300 bg-slate-950 border-b-[1px] border-b-slate-800">
+            <div
+              onClick={() => setOpenChat(false)}
+              className="p-2 bg-slate-800 rounded-lg text-white"
+            >
+              <LeftSliderIcon />
+            </div>
             <h1>{currentRoom?.name}</h1>
-            <h1>RoomId :{currentRoom?._id}</h1>
+            <h1>{currentRoom?._id}</h1>
           </div>
           <div
-            className="my-1 px-5 py-5 bg-slate-950 h-[calc(100%-140px)] overflow-y-scroll"
+            className="my-1 px-5 py-5 bg-slate-950 h-[calc(100%-140px)] overflow-y-auto"
             ref={scrollRef}
           >
             {!messages && (
@@ -140,14 +152,14 @@ const ChatContent = () => {
           </div>
           <div className="flex px-5 py-2 gap-2 items-center absolute w-full bottom-0 bg-slate-950 border-t-[1px] border-t-slate-800">
             <input
-              className="w-full py-4 px-8 rounded-full bg-slate-800 text-slate-300 outline-none text-2xl"
+              className="w-full py-2 px-4 sm:py-4 sm:px-8 rounded-full bg-slate-800 text-slate-300 outline-none text-2xl"
               type="text"
               placeholder="Type Here"
               ref={inputRef}
             />
             <div
               onClick={sendMessageHandler}
-              className="flex gap-2 cursor-pointer items-center bg-green-600 hover:bg-green-700  duration-150 select-none px-8 py-4 rounded-full text-2xl"
+              className="flex gap-2 cursor-pointer items-center bg-green-600 hover:bg-green-700  duration-150 select-none py-2 px-4 sm:py-4 sm:px-8 rounded-full text-2xl"
             >
               <button>Send</button>
               <SendIcon />
@@ -158,7 +170,7 @@ const ChatContent = () => {
         <>
           <div className="h-full flex justify-center items-center">
             <h1 className="text-4xl text-slate-600">
-              Click on rooms to get Started
+              Click on rooms in sidebar to get Started
             </h1>
           </div>
         </>

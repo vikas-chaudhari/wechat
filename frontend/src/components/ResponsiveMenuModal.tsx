@@ -1,4 +1,3 @@
-import toast, { Toaster } from "react-hot-toast";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import CrossIcon from "../icons/CrossIcon";
 import { responsiveMenuModalAtom } from "../recoil/atoms/responsiveMenuModalAtom";
@@ -10,6 +9,7 @@ import { useEffect } from "react";
 import GroupIcon from "../icons/GroupIcon";
 import PlusIcon from "../icons/PlusIcon";
 import LogoutIcon from "../icons/LogoutIcon";
+import { toast, ToastContainer, Zoom } from "react-toastify";
 
 function ResponsiveMenuModal() {
   const setResponsiveMenuModal = useSetRecoilState(responsiveMenuModalAtom);
@@ -59,69 +59,83 @@ function ResponsiveMenuModal() {
 
     localStorage.clear();
     setUser({});
-    navigate("/login");
     toast.success("Lougout toasted!");
+    navigate("/login");
   };
 
   return (
-    <div className="sm:hidden flex absolute z-50 top-[64px] backdrop-blur-sm bg-slate-900 bg-opacity-70 w-full justify-center items-center">
-      <Toaster position="top-center" reverseOrder={false} />
-      <div className="absolute top-0 right-0 flex w-[350px] gap-4 flex-col px-4 py-6 items-center rounded-md bg-slate-900">
-        <div
-          onClick={() => setResponsiveMenuModal(false)}
-          className="absolute cursor-pointer right-2 top-2 bg-red-600 hover:bg-red-700 duration-150 rounded-md p-1"
-        >
-          <CrossIcon />
-        </div>
-        <h1 className="px-2 text-4xl my-4">Menu</h1>
-        <div className="w-full flex flex-col justify-center items-center sm:hidden">
-          {Object.keys(user).length === 0 ? (
-            <div className="w-full flex gap-1 justify-center items-center">
-              <div className="w-full flex">
-                <Link to={"/login"}>
-                  <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
-                    Login
-                  </button>
-                </Link>
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Zoom}
+      />
+      <div className="sm:hidden flex absolute z-50 top-[64px] backdrop-blur-sm bg-slate-900 bg-opacity-70 w-full justify-center items-center">
+        <div className="absolute top-0 right-0 flex w-[350px] gap-4 flex-col px-4 py-6 items-center rounded-md bg-slate-900">
+          <div
+            onClick={() => setResponsiveMenuModal(false)}
+            className="absolute cursor-pointer right-2 top-2 bg-red-600 hover:bg-red-700 duration-150 rounded-md p-1"
+          >
+            <CrossIcon />
+          </div>
+          <h1 className="px-2 text-4xl my-4">Menu</h1>
+          <div className="w-full flex flex-col justify-center items-center sm:hidden">
+            {Object.keys(user).length === 0 ? (
+              <div className="w-full flex gap-1 justify-center items-center">
+                <div className="w-full flex">
+                  <Link to={"/login"}>
+                    <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
+                      Login
+                    </button>
+                  </Link>
+                </div>
+                <div className="w-full flex">
+                  <Link to={"/signup"}>
+                    <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
+                      Signup
+                    </button>
+                  </Link>
+                </div>
               </div>
-              <div className="w-full flex">
-                <Link to={"/signup"}>
-                  <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
-                    Signup
-                  </button>
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="w-full flex flex-col gap-3 justify-center items-center">
-              <div
-                onClick={joinRoomModalHandler}
-                className="w-full flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
-              >
-                <GroupIcon />
-                <button>Join Room</button>
-              </div>
+            ) : (
+              <div className="w-full flex flex-col gap-3 justify-center items-center">
+                <div
+                  onClick={joinRoomModalHandler}
+                  className="w-full flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
+                >
+                  <GroupIcon />
+                  <button>Join Room</button>
+                </div>
 
-              <div
-                onClick={createRoomModalHandler}
-                className="w-full flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
-              >
-                <PlusIcon />
-                <button>Create Room</button>
-              </div>
+                <div
+                  onClick={createRoomModalHandler}
+                  className="w-full flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
+                >
+                  <PlusIcon />
+                  <button>Create Room</button>
+                </div>
 
-              <div
-                onClick={logoutHandler}
-                className="w-full flex cursor-pointer gap-1 justify-center items-center bg-red-600 hover:bg-red-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
-              >
-                <LogoutIcon />
-                <button>Logout</button>
+                <div
+                  onClick={logoutHandler}
+                  className="w-full flex cursor-pointer gap-1 justify-center items-center bg-red-600 hover:bg-red-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
+                >
+                  <LogoutIcon />
+                  <button>Logout</button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -6,7 +6,7 @@ import { useRef } from "react";
 import axios from "axios";
 import { loaderAtom } from "../recoil/atoms/LoaderAtom";
 import { roomsAtom } from "../recoil/atoms/RoomsAtom";
-import toast, { Toaster } from "react-hot-toast";
+import { toast, ToastContainer, Zoom } from "react-toastify";
 
 const CreateRoomModal = () => {
   const setCreateRoomModal = useSetRecoilState(createRoomAtom);
@@ -30,7 +30,7 @@ const CreateRoomModal = () => {
     );
     setCreateRoomModal(false);
     setLoader(false);
-    toast.success("Room Created!");
+    toast.success("Room Created");
 
     const getRooms = async () => {
       const user = await JSON.parse(localStorage.getItem("user")!);
@@ -46,7 +46,19 @@ const CreateRoomModal = () => {
 
   return (
     <div className="flex absolute z-50 top-[64px] h-[calc(100vh-64px)] backdrop-blur-sm bg-slate-900 bg-opacity-70 w-full justify-center items-center">
-      <Toaster position="top-center" reverseOrder={false} />
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Zoom}
+      />
       <div className="relative flex w-[350px] gap-4 flex-col px-4 py-6 items-center rounded-md bg-slate-950">
         <div
           onClick={() => setCreateRoomModal(false)}

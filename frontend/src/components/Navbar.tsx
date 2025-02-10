@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import GroupIcon from "../icons/GroupIcon";
 import { createRoomAtom } from "../recoil/atoms/CreateRoomAtom";
 import { joinRoomAtom } from "../recoil/atoms/joinRoomAtom";
-import toast, { Toaster } from "react-hot-toast";
+import { ToastContainer, Zoom, toast } from "react-toastify";
 import MenuIcon from "../icons/MenuIcon";
 import { responsiveMenuModalAtom } from "../recoil/atoms/responsiveMenuModalAtom";
 
@@ -61,67 +61,80 @@ const Navbar = () => {
     localStorage.clear();
     setUser({});
     navigate("/login");
-    toast.success("Lougout toasted!");
+    toast.success("Logged out");
   };
 
   return (
-    <div className="sm:px-5 px-2 z-0 h-16 flex  justify-between items-center bg-slate-950 border-b-[1px] border-b-slate-800">
-      <Toaster position="top-center" reverseOrder={false} />
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Zoom}
+      />
+      <div className="sm:px-5 px-2 z-0 h-16 flex  justify-between items-center bg-slate-950 text-white border-b-2 shadow-2xl shadow-slate-900 border-b-slate-900">
+        <div className="text-4xl cursor-pointer gap-2 flex justify-center items-center font-bold text-green-600 select-none">
+          <WeChatIcon />
+          <h1>WeChat</h1>
+        </div>
+        <div
+          onClick={responsiveMenuModalHandler}
+          className="flex sm:hidden justify-center items-center p-2 cursor-pointer"
+        >
+          <MenuIcon />
+        </div>
+        <div className="hidden sm:flex">
+          {Object.keys(user).length === 0 ? (
+            <div className="flex gap-1 justify-center items-center">
+              <Link to={"/login"}>
+                <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
+                  Login
+                </button>
+              </Link>
 
-      <div className="text-4xl cursor-pointer gap-2 flex justify-center items-center font-bold text-green-600 select-none">
-        <WeChatIcon />
-        <h1>WeChat</h1>
-      </div>
-      <div
-        onClick={responsiveMenuModalHandler}
-        className="flex sm:hidden justify-center items-center p-2 cursor-pointer"
-      >
-        <MenuIcon />
-      </div>
-      <div className="hidden sm:flex">
-        {Object.keys(user).length === 0 ? (
-          <div className="flex gap-1 justify-center items-center">
-            <Link to={"/login"}>
-              <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
-                Login
-              </button>
-            </Link>
-
-            <Link to={"/signup"}>
-              <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
-                Signup
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <div className="flex gap-1 justify-center items-center">
-            <div
-              onClick={joinRoomModalHandler}
-              className="flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
-            >
-              <GroupIcon />
-              <button>Join Room</button>
+              <Link to={"/signup"}>
+                <button className="bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold">
+                  Signup
+                </button>
+              </Link>
             </div>
+          ) : (
+            <div className="flex gap-1 justify-center items-center">
+              <div
+                onClick={joinRoomModalHandler}
+                className="flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
+              >
+                <GroupIcon />
+                <button>Join Room</button>
+              </div>
 
-            <div
-              onClick={createRoomModalHandler}
-              className="flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
-            >
-              <PlusIcon />
-              <button>Create Room</button>
-            </div>
+              <div
+                onClick={createRoomModalHandler}
+                className="flex cursor-pointer gap-2 justify-center items-center bg-green-600 hover:bg-green-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
+              >
+                <PlusIcon />
+                <button>Create Room</button>
+              </div>
 
-            <div
-              onClick={logoutHandler}
-              className="flex cursor-pointer gap-1 justify-center items-center bg-red-600 hover:bg-red-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
-            >
-              <LogoutIcon />
-              <button>Logout</button>
+              <div
+                onClick={logoutHandler}
+                className="flex cursor-pointer gap-1 justify-center items-center bg-red-600 hover:bg-red-700 duration-150 select-none px-4 py-2 rounded-md font-semibold"
+              >
+                <LogoutIcon />
+                <button>Logout</button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

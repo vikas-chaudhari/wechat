@@ -23,7 +23,7 @@ function App() {
   const loader = useRecoilValue(loaderAtom);
 
   return (
-    <div className="flex flex-col text-white">
+    <div className="flex flex-col text-white bg-slate-950">
       {loader && <Loader />}
       <Navbar />
       {createRoomModal && <CreateRoomModal />}

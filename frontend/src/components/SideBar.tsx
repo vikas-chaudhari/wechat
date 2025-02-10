@@ -5,7 +5,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { roomsAtom } from "../recoil/atoms/RoomsAtom";
 import { currentRoomAtom } from "../recoil/atoms/CurrrentRoomAtom";
 import { openChatAtom } from "../recoil/atoms/OpenChatAtom";
-
+import { Users } from "lucide-react";
 interface roomInterface {
   _id: string;
   name: string;
@@ -40,19 +40,20 @@ const SideBar = () => {
     <div
       className={`${
         openChat ? "hidden" : "flex"
-      } w-screen relative sm:w-64 h-[calc(100vh-64px)] pt-2 px-3 flex-col bg-slate-950 border-r-[1px] border-r-slate-800`}
+      } w-screen relative sm:w-64 h-[calc(100vh-64px)] pt-2 px-3 flex-col bg-slate-950 border-r-2 shadow-lg shadow-slate-900 border-r-slate-900`}
     >
-      <div className="mt-10 w-full text-2xl flex justify-between items-center font-semibold text-slate-300">
+      <div className="mt-2 w-full text-2xl flex justify-between items-center font-semibold text-slate-300">
         <h1>All Rooms</h1>
         <ChatIcon />
       </div>
       <div className="overflow-y-auto py-5 flex flex-col gap-2 ">
         {rooms.map((room: roomInterface) => (
           <div
-            className="cursor-pointer py-2 rounded-md bg-slate-900 px-2  hover:bg-slate-800 duration-150 select-none"
+            className="flex gap-4 cursor-pointer py-2 rounded-md bg-slate-900 px-2  hover:bg-slate-800 duration-150 select-none"
             key={room._id}
             onClick={() => goToCurrentRoomHandler(room)}
           >
+            <Users className="text-slate-600" />
             <h1 className="text-xl">{room.name}</h1>
           </div>
         ))}

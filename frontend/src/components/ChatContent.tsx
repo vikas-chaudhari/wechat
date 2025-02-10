@@ -4,8 +4,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { currentRoomAtom } from "../recoil/atoms/CurrrentRoomAtom";
 import { userAtom } from "../recoil/atoms/UserAtom";
 import axios from "axios";
-import LeftSliderIcon from "../icons/LeftSliderIcon";
 import { openChatAtom } from "../recoil/atoms/OpenChatAtom";
+import { ChevronsLeft, Copy } from "lucide-react";
+import { ToastContainer, Zoom, toast } from "react-toastify";
 
 interface roomInterface {
   _id?: string;
@@ -107,22 +108,46 @@ const ChatContent = () => {
     socketRef.current?.send(JSON.stringify(message));
   };
 
+  const copyToClipboard = (roomId: string) => {
+    window.navigator.clipboard.writeText(roomId);
+    toast.success("Room Id copied");
+  };
+
   return (
     <div
       className={`${openChat ? "flex flex-col" : "hidden"}
       h-[calc(100vh-64px)] bg-slate-950 relative w-full`}
     >
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Zoom}
+      />
       {Object.keys(currentRoom).length > 0 ? (
         <>
-          <div className="flex flex-wrap items-center justify-between py-3 px-5 text-2xl font-semibold text-slate-300 bg-slate-950 border-b-[1px] border-b-slate-800">
+          <div className="flex gap-2 flex-wrap items-center justify-between py-3 px-5 text-2xl font-semibold text-slate-300 bg-slate-950 border-b-[1px] border-b-slate-800">
             <div
               onClick={() => setOpenChat(false)}
-              className="p-2 bg-slate-800 rounded-lg text-white"
+              className="p-2 cursor-pointer bg-green-600 text-green-600 bg-opacity-20 rounded-lg "
             >
-              <LeftSliderIcon />
+              <ChevronsLeft />
             </div>
             <h1>{currentRoom?.name}</h1>
-            <h1>{currentRoom?._id}</h1>
+            <div
+              className="flex justify-center items-center gap-4 p-2 cursor-pointer bg-green-600 text-green-600 bg-opacity-20 rounded-lg"
+              onClick={() => copyToClipboard(currentRoom._id!)}
+            >
+              <h1 className="break-all">{currentRoom?._id}</h1>
+              <Copy />
+            </div>
           </div>
           <div
             className="my-1 px-5 py-5 bg-slate-950 h-[calc(100%-140px)] overflow-y-auto"

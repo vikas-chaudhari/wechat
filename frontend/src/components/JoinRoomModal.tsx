@@ -14,12 +14,14 @@ const JoinRoomModal = () => {
   const setLoader = useSetRecoilState(loaderAtom);
   const setRooms = useSetRecoilState(roomsAtom);
 
+  const http_url = import.meta.env.VITE_HTTP_URL;
+
   const joinRoomHandler = async () => {
     setLoader(true);
     const roomId = roomIdRef?.current?.value;
     const user = await JSON.parse(localStorage.getItem("user")!);
     await axios.post(
-      "http://localhost:3000/join-room",
+      `${http_url}/join-room`,
       {
         roomId,
       },
@@ -35,7 +37,7 @@ const JoinRoomModal = () => {
 
     const getRooms = async () => {
       const user = await JSON.parse(localStorage.getItem("user")!);
-      const { data } = await axios.get("http://localhost:3000/all-rooms", {
+      const { data } = await axios.get(`${http_url}/all-rooms`, {
         headers: {
           Authorization: user.token,
         },

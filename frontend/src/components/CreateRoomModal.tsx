@@ -13,12 +13,13 @@ const CreateRoomModal = () => {
   const roomNameRef = useRef<HTMLInputElement>(null);
   const setLoader = useSetRecoilState(loaderAtom);
   const setRooms = useSetRecoilState(roomsAtom);
+  const http_url = import.meta.env.VITE_HTTP_URL;
   const createRoomHandler = async () => {
     setLoader(true);
     const name = roomNameRef?.current?.value;
     const user = await JSON.parse(localStorage.getItem("user")!);
     await axios.post(
-      "http://localhost:3000/create-room",
+      `${http_url}/create-room`,
       {
         name,
       },
@@ -34,7 +35,7 @@ const CreateRoomModal = () => {
 
     const getRooms = async () => {
       const user = await JSON.parse(localStorage.getItem("user")!);
-      const { data } = await axios.get("http://localhost:3000/all-rooms", {
+      const { data } = await axios.get(`${http_url}/all-rooms`, {
         headers: {
           Authorization: user.token,
         },

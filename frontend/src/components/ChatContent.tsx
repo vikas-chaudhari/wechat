@@ -40,13 +40,15 @@ const ChatContent = () => {
   const user = useRecoilValue<userInterface>(userAtom);
   const [openChat, setOpenChat] = useRecoilState(openChatAtom);
 
+  const http_url = import.meta.env.VITE_HTTP_URL;
+  const ws_url = import.meta.env.VITE_WS_URL;
   const getPreviousmessages = async () => {
     const user = await JSON.parse(localStorage.getItem("user")!);
     if (!currentRoom._id) {
       return;
     }
     const { data } = await axios.get(
-      "http://localhost:3000/all-messages/" + currentRoom._id,
+      `${http_url}/all-messages/${currentRoom._id}`,
       {
         headers: {
           Authorization: user.token,
@@ -60,7 +62,7 @@ const ChatContent = () => {
     getPreviousmessages();
 
     if (Object.keys(currentRoom).length > 0) {
-      const socket = new WebSocket("ws://localhost:5000");
+      const socket = new WebSocket(`${ws_url}`);
       socketRef.current = socket;
       socket.onopen = () => {
         const message = {

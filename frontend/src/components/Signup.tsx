@@ -8,8 +8,11 @@ const Signup = () => {
   const passwordRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+
+  const http_url = import.meta.env.VITE_HTTP_URL;
+
   const signupHandler = async () => {
-    await axios.post("http://localhost:3000/signup", {
+    await axios.post(`${http_url}/signup`, {
       name: nameRef?.current?.value,
       username: usernameRef?.current?.value,
       password: passwordRef?.current?.value,

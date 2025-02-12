@@ -19,10 +19,13 @@ const SideBar = () => {
   const setCurrentRoom = useSetRecoilState(currentRoomAtom);
   const [openChat, setOpenChat] = useRecoilState(openChatAtom);
 
+  const http_url = import.meta.env.VITE_HTTP_URL;
+  const ws_url = import.meta.env.VITE_WS_URL;
+
   useEffect(() => {
     const getRooms = async () => {
       const user = await JSON.parse(localStorage.getItem("user")!);
-      const { data } = await axios.get("http://localhost:3000/all-rooms", {
+      const { data } = await axios.get(`${http_url}/all-rooms`, {
         headers: {
           Authorization: user.token,
         },

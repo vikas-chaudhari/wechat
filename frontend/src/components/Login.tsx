@@ -13,9 +13,11 @@ const Login = () => {
   const setUser = useSetRecoilState(userAtom);
   const navigate = useNavigate();
 
+  const http_url = import.meta.env.VITE_HTTP_URL;
+
   const loginHandler = async () => {
     setLoader(true);
-    const { data } = await axios.post("http://localhost:3000/login", {
+    const { data } = await axios.post(`${http_url}/login`, {
       username: usernameRef?.current?.value,
       password: passwordRef?.current?.value,
     });

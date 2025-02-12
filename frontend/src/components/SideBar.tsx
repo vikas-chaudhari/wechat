@@ -20,7 +20,6 @@ const SideBar = () => {
   const [openChat, setOpenChat] = useRecoilState(openChatAtom);
 
   const http_url = import.meta.env.VITE_HTTP_URL;
-  const ws_url = import.meta.env.VITE_WS_URL;
 
   useEffect(() => {
     const getRooms = async () => {
